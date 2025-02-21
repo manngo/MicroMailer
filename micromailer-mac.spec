@@ -14,21 +14,13 @@ a = Analysis(
 	optimize=0,
 )
 pyz = PYZ(a.pure)
-splash = Splash('resources/email',
-                binaries=a.binaries,
-                datas=a.datas,
-                text_pos=(10, 50),
-                text_size=12,
-                text_color='black')
 exe = EXE(
     pyz,
     a.scripts,
-#    splash,
-#    splash.binaries,
     a.binaries,
     a.datas,
     [],
-    name='MicroMailer',
+    name='MicroMailerMac',
     datas=[('micromailer.ini', '.')],
     debug=False,
     bootloader_ignore_signals=False,

@@ -1,5 +1,7 @@
 #   MicroMailer
 
+Download: [https://github.com/manngo/MicroMailer/releases/latest](https://github.com/manngo/MicroMailer/releases/latest)
+
 MicroMailer is a simple mail sending application. It doesn’t require a separate MTA (Main Transfer Agent or Mail Server).
 
 It looks something like this:
