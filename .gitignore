@@ -1,0 +1,8 @@
+/.venv
+/.venv-mac
+/.venv-win
+/__pycache__
+/.idea
+/build
+/.idea
+/dist
