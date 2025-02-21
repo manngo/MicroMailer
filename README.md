@@ -12,7 +12,7 @@ It looks something like this:
 
 ##	Usage
 
-Form items in _bold__ are required:
+Form items in __bold__ are required:
 
 | Form Item        | Description                                                                            |
 |------------------|----------------------------------------------------------------------------------------|
