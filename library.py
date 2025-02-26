@@ -22,6 +22,11 @@ def dbug(*args, pretty=False, silent=None, **kwargs):
 	else:
 		pp(*args)
 
+import tkinter.messagebox
+def say(message='Hello', title='Say'):
+	fback = sys._getframe().f_back
+	tkinter.messagebox.showinfo(title=title, message=f'{os.path.basename(fback.f_code.co_filename)}:{fback.f_lineno}: {message}')
+
 def resourcePath(path):
 	try:
 		base = sys._MEIPASS
@@ -34,8 +39,13 @@ def resource_path(relative_path):
 
 import os, json
 class Prefs:
-	def __init__(self, paths=[]):
+	def __init__(self, paths=[], clear=False):
 		self.path = os.path.join(os.path.expanduser('~'), *paths)
+		if clear:
+			try:
+				os.remove(self.path)
+			except:
+				pass
 
 	def load(self):
 		data = {}

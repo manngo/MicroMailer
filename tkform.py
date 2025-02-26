@@ -2,21 +2,43 @@
 TKForm
 '''
 
+from library import dbug, say
+import webbrowser
+
 import tkinter
 from tkinter import ttk
 from tkinter.font import Font
 
-from library import dbug
+from tkinterdnd2 import TkinterDnD
 
-class TKForm(tkinter.Tk):
+#class TKForm(tkinter.Tk):
+class TKForm(TkinterDnD.Tk):
 	'''Main Class'''
-	def __init__(self, title='GTK Window'):
+	def __init__(self, title='GTK Window', pages=[]):
 		super().__init__()
 		self.title(title)
-		# self.geometry('800x600')
-		self.mainframe = ttk.Frame(self, padding='13 3 12 12')
-		self.grid_columnconfigure(0, weight=1)
-		self.mainframe.grid(column=0, row=0, sticky='NWES')
+		#	self.geometry('800x720')
+
+		if pages:
+			dbug()
+			self.notebook = ttk.Notebook(self)
+			self.notebook.pack(expand=True)
+
+			self.mainframe = ttk.Frame(self.notebook, padding='13 3 12 12')
+
+			self.notebook.add(self.mainframe, text=pages[0])
+			self.pages = [self.notebook]
+
+			if len(pages)>1:
+				for i in pages[1:]:
+					dbug()
+					frame = ttk.Frame(self.notebook, padding='13 3 12 12')
+					self.pages.append(frame)
+					self.notebook.add(frame, text=i)
+
+		else:
+			self.mainframe = ttk.Frame(self, padding='13 3 12 12')
+			self.mainframe.pack(padx=8, pady=8, fill='both', expand=True)
 
 	def clear(self):
 		for i in self.window.winfo_children():
@@ -39,12 +61,15 @@ class TKForm(tkinter.Tk):
 				for name, data in data.items():				#	Add labels & commands
 					m.add_command(label=name, command=data)
 
-	def add(self, widget, row, column, columnspan=1, rowspan=1, sticky='W', pad=(2,2)):
+	def add(self, widget, row, column, columnspan=1, rowspan=1, sticky='W', pad=(2,2), page=None):
 #		dbug(f'row: {row}, column: {column}')
 		self.mainframe.grid_columnconfigure(row, weight=1)
 
 		sticky = 'nsew'
-		widget.grid(in_=self.mainframe, row=row, column=column, columnspan=columnspan, rowspan=rowspan, sticky=sticky, padx=pad[0], pady=pad[1])
+		if not page:
+			widget.grid(in_=self.mainframe, row=row, column=column, columnspan=columnspan, rowspan=rowspan, sticky=sticky, padx=pad[0], pady=pad[1])
+		else:
+			widget.grid(in_=self.pages[page], row=row, column=column, columnspan=columnspan, rowspan=rowspan, sticky=sticky, padx=pad[0], pady=pad[1])
 
 	def show(self):
 		self.mainloop()
@@ -53,6 +78,12 @@ class Label(ttk.Label):
 	def __init__(self, parent, text, textvariable=None, **kwargs):
 		self.parent = parent
 		super().__init__(parent, text=text, textvariable=textvariable, **kwargs)
+
+	def linkify(self):
+		self.bind('<Button-1>', lambda event: webbrowser.open(event.widget['text']))
+		self.bind("<Enter>", lambda event: event.widget.configure(style='link.hover.TLabel'))
+		self.bind("<Leave>", lambda event: event.widget.configure(style='link.TLabel'))
+
 
 class BoldLabel(Label):
 	def __init__(self, parent, text, textvariable=None, **kwargs):
@@ -63,6 +94,8 @@ class Textbox(ttk.Entry):
 	def __init__(self, parent, textvariable=None, text=None, **kwargs):
 		self.parent = parent
 		super().__init__(parent, textvariable=textvariable)
+		self.configure(font=('TkFixedFont',))
+
 		if text:
 			self.insert(0, text)
 

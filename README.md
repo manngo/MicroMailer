@@ -23,6 +23,8 @@ Form items in __bold__ are required:
 | Attachment       | You can optionally include an attachment.                                              |
 | Save Prefs       | See below                                                                              |
 
+You can add an attachment using the <kbd><kbd>Attach…</kbd></kbd> button.  
+You can also drag and drop an attachment over the text box.
 
 ##	Prefilled Data
 
@@ -37,7 +39,7 @@ You can pre-fill your MicroMailer form using an `ini` file, such as:
 	from-name = Fred Nurke
 	from-email = fred@example.com
 	to-name = Ginger Bloggs
-	to-email = 'ginger@example.net
+	to-email = ginger@example.net
 	subject = Test
 	message = This space for rent …
 	attachment = email.png

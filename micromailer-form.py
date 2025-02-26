@@ -1,35 +1,39 @@
 import tkinter.filedialog
+import tkinter.messagebox
 
 from library import *
+
 import tkform
 import micromailer
+from tkinterdnd2 import DND_FILES
 
 defaults = readIni(resource_path('micromailer.ini'))['micromailer']
-prefs = Prefs(['.micro-mailer', 'prefs.json'])
+prefs = Prefs(['.micro-mailer', 'prefs.json'], clear=True)
 
 #	Form
-form = tkform.TKForm('Send Email')
-form.geometry('480x368')
+form = tkform.TKForm('Send Email', pages=['Email', 'About'], )
+form.geometry('600x440')
 
-# #	fonts
-# labelFont = tkinter.font.nametofont("TkTextFont")
+#	styles
+labelFont = tkinter.font.nametofont("TkTextFont")
 # #labelFont.config(weight='bold', size=12)
-# headingFont = labelFont.copy()
-# headingFont.config(size=24)
+headingFont = labelFont.copy()
+headingFont.config(size=24)
 # comboboxFont = labelFont.copy()
 # comboboxFont.config(weight='normal', size=12)
-# entryFont = tkinter.font.nametofont("TkFixedFont")
+entryFont = tkinter.font.nametofont("TkFixedFont")
 # #entryFont.config(size=12)
-# linkFont = entryFont.copy()
-# linkFont.config(weight='normal', underline=False)
-# linkHoverFont = entryFont.copy()
-# linkHoverFont.config(weight='bold', underline=True)
+linkFont = entryFont.copy()
+linkFont.config(weight='normal', underline=False)
+linkHoverFont = entryFont.copy()
+linkHoverFont.config(weight='bold', underline=True)
 #
 # #	ttk Styles
 # #tkinter.ttk.Style().configure('TLabel',foreground="#666666", font=labelFont)
-# tkinter.ttk.Style().configure('heading.TLabel', foreground='#133796', font=headingFont)
-# tkinter.ttk.Style().configure('link.TLabel',foreground='#133796',font=linkFont)
-# tkinter.ttk.Style().configure('link.hover.TLabel',foreground='#133796',font=linkHoverFont)
+# tkinter.ttk.Style().configure('TEntry', foreground="#666666", font='TkFixedFont')
+tkinter.ttk.Style().configure('heading.TLabel', foreground='#133796', font=headingFont)
+tkinter.ttk.Style().configure('link.TLabel', foreground='#133796', font=linkFont)
+tkinter.ttk.Style().configure('link.hover.TLabel', foreground='#133796', font=linkHoverFont)
 # tkinter.ttk.Style().configure('TListbox',weight='normal', font=comboboxFont)
 # form.option_add('*TCombobox*Listbox.font', comboboxFont)   # apply font to combobox list
 #
@@ -146,6 +150,30 @@ attachmentTextbox = tkform.Textbox(form, textvariable=attachment)
 attachmentButton = tkform.Button(form, text='Attach …', command=getAttachment)
 form.add(attachmentTextbox, row=11, column=1, columnspan=7, sticky='we')
 form.add(attachmentButton, row=11, column=8)
+
+
+
+form.add(tkform.Label(form, "About MicroMailer"), page=1, column=0, row=0, columnspan=4, sticky='W')
+form.add(tkform.Label(form, "© Mark Simon"), page=1, column=0, row=1, columnspan=4, sticky='W')
+form.add(tkform.Label(form.pages[1], "OpeDetailsn:"), page=1, column=0, row=2, sticky='W')
+
+linkLabel = tkform.Label(form.pages[1], "https://github.com/manngo/micromailer/", style='link.TLabel')
+form.add(linkLabel, page=1, column=2, row=2, columnspan=3, sticky='W')
+linkLabel.linkify()
+
+form.add(tkform.Label(form.pages[1], "Share & Enjoy"), page=1, column=0, row=3, columnspan=4, sticky='W')
+
+
+#attachmentTextbox.configure(
+#	ondrop=lambda e: attachment.set(e.data)
+#)
+
+def setAttachment(e):
+#	say(e.data)
+	attachment.set(e.data.strip('{}'))
+
+attachmentTextbox.drop_target_register(DND_FILES)
+attachmentTextbox.dnd_bind('<<Drop>>', setAttachment)
 
 savePrefsCheckbox = tkform.Checkbox(form, 'Save Prefs', textvariable=savePrefs)
 form.add(savePrefsCheckbox, row=12, column=1)

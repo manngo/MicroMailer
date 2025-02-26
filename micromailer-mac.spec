@@ -1,12 +1,23 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_data_files
+from PyInstaller.utils.hooks import collect_all
+
+datas=[('micromailer.ini', '.')]
+binaries = []
+hiddenimports = []
+collect = collect_all('tkinterdnd2')
+datas += collect[0];
+binaries += collect[1];
+hiddenimports += collect[2]
+
 
 a = Analysis(
     ['micromailer-form.py'],
 	pathex=[],
-	binaries=[],
-	datas=[('micromailer.ini', '.')],
-	hiddenimports=[],
-	hookspath=[],
+	binaries=binaries,
+	datas=datas,
+	hiddenimports=hiddenimports,
+    hookspath=['.'],
 	hooksconfig={},
 	runtime_hooks=[],
 	excludes=[],
@@ -21,7 +32,7 @@ exe = EXE(
     a.datas,
     [],
     name='MicroMailerMac',
-    datas=[('micromailer.ini', '.')],
+#    datas=[('micromailer.ini', '.')],
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -37,10 +48,10 @@ exe = EXE(
 )
 app = BUNDLE(
     exe,
-    name='MicroMailer.app',
+    name='MicroMailerMac.app',
     icon='resources/email.icns',
     bundle_identifier='net.manngo.micro-mailer',
-    version='0.1.1',
+    version='0.1.2',
      info_plist={
           'CFBundleDocumentTypes': [{
                'CFBundleTypeName': "INI File",
