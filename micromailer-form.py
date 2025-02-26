@@ -155,7 +155,7 @@ form.add(attachmentButton, row=11, column=8)
 
 form.add(tkform.Label(form, "About MicroMailer"), page=1, column=0, row=0, columnspan=4, sticky='W')
 form.add(tkform.Label(form, "© Mark Simon"), page=1, column=0, row=1, columnspan=4, sticky='W')
-form.add(tkform.Label(form.pages[1], "OpeDetailsn:"), page=1, column=0, row=2, sticky='W')
+form.add(tkform.Label(form.pages[1], "Details:"), page=1, column=0, row=2, sticky='W')
 
 linkLabel = tkform.Label(form.pages[1], "https://github.com/manngo/micromailer/", style='link.TLabel')
 form.add(linkLabel, page=1, column=2, row=2, columnspan=3, sticky='W')
